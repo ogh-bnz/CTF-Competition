@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.2/sandstone/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>User Portal | TCH Community</title>
+  </head>
+
+  <body class="bg-light">
+    <div class="container">
+      
+      <div class="col-md-12 mt-5 pb-2">
+        <h1 class="text-center mb-4 text-info"><i class="fa-solid fa-wind"></i> TCH Community</h1>
+        <h3 class="text-center mb-4">TCH Community</h3>
+      </div>
+
+      <div class="col-md-6 offset-md-3 col-lg-4 offset-lg-4 mt-3 py-4 px-3 border border-2 rounded">
+        <p class="text-center">User login</p>
+        <form class="form-inline" action="javascript:login()">
+          <div class="form-group">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" name="username" id="username" placeholder="Enter username" value="" required>
+              <label for="floatingInput">Username</label>
+            </div>
+            <div class="form-floating">
+              <input type="password" class="form-control" name="password" id="password" placeholder="Enter password" required>
+              <label for="floatingPassword">Password</label>
+            </div>
+          </div>
+          <div class="text-center">
+            <button class="btn btn btn-info mt-4" type="submit">Log in</button>
+          </div>
+        </form>
+        <div id="result" class="mt-4" style="display:none;"></div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+
+    <script>
+      // sec-code: 220isfriendnumber - (not include/answer in direct login ctf problem)
+      function set_alert(txt, color) {
+        var result = '<div class="alert mb-0 alert-' + color + '">' + txt + '</div>';
+        $("#result").html(result);
+        $("#result").fadeIn();
+      }
+
+      // Check if provided username and password are correct
+      function login() {
+        $("#result").fadeOut("fast");
+        // Send request with credentials
+        $.getJSON("login.php",
+          {
+            "action":"login",
+            "username": $("#username").val(),
+            "password": $("#password").val()
+          }, function (r) {
+            if (r.login_successful) {
+              // Redirect if login successful
+              set_alert('Login successful! Redirecting... <i class="fa-solid fa-spinner fa-spin"></i>', "success");
+              setTimeout(function () {
+                window.location.href = "./user_portal.php";
+              }, 1500);
+            } else {
+              // Username or password incorrect
+              set_alert("Login failed! Please try again.", "danger");
+            }
+          }
+        );
+      }
+    </script>
+
+  </body>
+</html>
